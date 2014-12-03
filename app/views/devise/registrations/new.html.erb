@@ -1,0 +1,68 @@
+<% title 'Sign up' %>
+<h3><%= 'Sign up' %></h3>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html:{"data-abide" => ''}) do |f| %>
+  <% if resource.errors.any? %>
+    <div class="error-panel">
+      <div class="heading">
+        <h5>Resolve following <%= pluralize(resource.errors.count, "error") %>:</h5>
+      </div>
+      <div class="content">
+        <ul>
+        <% resource.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="small-12 large-4 medium-6 columns">
+      <label for="user_name">Name
+        <%= f.text_field :name, autofocus: true, required: true %>
+      </label>
+      <small class="error">Name is required</small>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="small-12 large-4 medium-6 columns">
+      <label for="user_email">Email
+        <%= f.email_field :email, required: true %>
+      </label>
+      <small class="error">A valid email id is required</small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-12 large-4 medium-6 columns">
+      <label for="user_password">Password
+        <%= f.password_field :password, autocomplete: "off", required: true %>
+      </label>
+      <small class="error">Password is required</small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-12 large-4 medium-6 columns">
+      <label for="user_password_confirmation">Password confirmation
+        <%= f.password_field :password_confirmation, autocomplete: "off" %>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-12 large-4 medium-6 columns">
+      <label for="user_role">Register as:
+        <%= f.radio_button :role, User.roles[:reader], checked: true %> Reader
+        <%= f.radio_button :role, User.roles[:writer] %> Writer
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.submit "Sign up", data: { disable_with: "Please wait..." }, class: "button tiny radius round" %>
+    </div>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>

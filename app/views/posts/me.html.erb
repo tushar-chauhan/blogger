@@ -1,0 +1,43 @@
+<% title 'Posts' %>
+<div class="small-11 small-centered columns">
+  <h4>Posts</h4>
+  <table>
+    <thead>
+      <tr>
+        <th width="500">Title</th>
+        <th>Author</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><h5><%= link_to post.title, post_path(post) %></h5></td>
+        <td><%= post.user.name %></td>
+        <% unless current_user.reader? %>
+          <td>
+            <% if policy(post).update? %>
+              <%= link_to "Edit post", edit_post_path(post), class: "button tiny round" %>
+            <% end %>
+            <% if policy(post).destroy? %>
+              <%= link_to "Delete post", "posts/#{post.id}",data: { confirm: "Are you sure?" }, method: :delete, class: "button tiny round alert" %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+      <tr>
+        <td colspan="3">
+          <%= will_paginate @posts, renderer: FoundationPagination::Rails %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="center">
+    <div class="small-12 large-3 medium-4 large-centered medium-centered columns">
+    <% if policy(Post).create? %>
+      <%= link_to "Add new post", new_post_path, class: "button small radius" %>
+    <% end %>
+  </div>
+</div>

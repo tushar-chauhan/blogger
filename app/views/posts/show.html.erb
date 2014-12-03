@@ -1,0 +1,12 @@
+
+<h4><%= @post.title %></h4>
+<div class="panel radius">
+  <%= @post.content %>
+</div>
+<% if policy(@post).update? %>
+  <%= link_to "Edit post", edit_post_path(@post), class: "button tiny round" %>
+<% end %>
+<% if policy(@post).destroy? %>
+  <%= link_to "Delete post", @post,data: { confirm: "Are you sure?" }, method: :delete, class: "button tiny round alert" %>
+<% end %><br><br>
+<%= link_to 'Back', posts_path %>

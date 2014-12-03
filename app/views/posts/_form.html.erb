@@ -1,0 +1,42 @@
+<%= form_for @post, html: {'data-abide' => ''} do |f| %>
+  <% if @post.errors.any? %>
+    <div class="error-panel">
+      <div class="heading">
+        <h5>Resolve following <%= pluralize(@post.errors.count, "error") %>:</h5>
+      </div>
+      <div class="content">
+        <ul>
+        <% @post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="small-12 large-4 medium-6 columns">
+      <label for="post_title">Title
+        <%= f.text_field :title, required: true, autofocus: true %>
+      </label>
+      <small class="error">Title is required.</small>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="small-12 large-4 medium-6 columns">
+      <label for="post_content">Content
+        <%= f.text_area :content, required: true, autofocus: true, rows: 10, style: "width: 500px;" %>
+      </label>
+      <small class="error">Content is required.</small>
+    </div>
+  </div>
+  <%= f.hidden_field :user_id, value: current_user.id %>
+
+  <div class="row">
+    <div class="small-3 columns">
+      <%= f.submit 'Submit', data: { disable_with: 'Wait...' }, class: "button small radius" %>
+    </div>
+  </div>
+
+<% end %>

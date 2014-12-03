@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Blogger - <%= content_for?(:title) ? yield(:title) : "" %></title>
+
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "vendor/modernizr" %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body>
+    <div class="contain-to-grid sticky">
+      <nav class="top-bar" data-topbar data-options="is_hover: false;">
+        <ul class="title-area">
+          <li class="name">
+            <h1><a href="/"><%= t('site.logo_title') %></a></h1>
+          </li>
+           <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+          <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+        </ul>
+        <section class="top-bar-section">
+          <!-- Right Nav Section -->
+          <ul class="right">
+            <li class="divider"></li>
+            <% if user_signed_in? %>
+              <li class="<%= 'active' if params[:controller] == "posts" && params[:action] == "index" %>">
+                <%= link_to "Posts", (params[:controller] == "posts" && params[:action] == "index") ? "javascript:;" : posts_path %>
+              </li>
+              <% unless current_user.reader? %>
+                <li class="divider"></li>
+                <li class="<%= 'active' if params[:controller] == "posts" && params[:action] == "me" %>">
+                  <%= link_to "My posts", (params[:controller] == "posts" && params[:action] == "me") ? "javascript:;" : posts_me_path %>
+                </li>
+              <% end %>
+              <li class="divider"></li>
+              <li class="<%= 'active' if params[:controller] == "devise/registrations" && params[:action] == "edit" %>"><%= link_to current_user.name, (params[:controller] == "devise/registrations" && params[:action] == "edit") ? "javascript:;" : edit_user_registration_path %></li>
+              <li class="divider"></li>
+              <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
+            <% else %>
+              <li class="<%= 'active' if params[:controller] == "devise/registrations" && params[:action] == "new" %>">
+                <%= link_to "Sign up", (params[:controller] == "devise/registrations" && params[:action] == "new") ? "javascript:;" : new_user_registration_path %>
+              </li>
+              <li class="divider"></li>
+              <li class="<%= 'active' if params[:controller] == "devise/sessions" && params[:action] == "new" %>">
+                <%= link_to "Login", (params[:controller] == "devise/sessions" && params[:action] == "new") ? "javascript:;" : new_user_session_path %>
+              </li>
+            <% end %>
+              <li class="divider"></li>
+          </ul>
+        </section>
+      </nav>
+    </div>
+    <div class="row">
+      <div class="small-12 small-centered columns" style="margin: 10px 0;">
+        <% flash.each do |name, msg| %>
+          <div data-alert class="alert-box <%= name %>">
+            <%= msg %>
+            <a href="#" class="close">&times;</a>
+          </div>
+        <% end %>
+
+        <%= yield %>
+      </div>
+    </div>
+  </body>
+</html>
