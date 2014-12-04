@@ -5,7 +5,7 @@ User.create! name: "Reader", email: "reader@test.com", password: "test1234", pas
 User.create! name: "Writer", email: "writer@test.com", password: "test1234", password_confirmation: "test1234", role: 1
 
 #Create admin user
-User.create! name: "Admin user", email: "admin@test.com", password: "admin123", password_confirmation: "test1234", role: 2
+User.create! name: "Admin user", email: "admin@test.com", password: "test1234", password_confirmation: "test1234", role: 2
 
 # Create Sample Blog Posts
 Post.create! title: "Batman 1", user_id: 2, content: <<-POST
