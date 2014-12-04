@@ -10,13 +10,14 @@ class PostsController < ApplicationController
   end
 
   def me
-    @posts = policy_scope(Post).order('created_at desc').page(params[:page])  unless current_user.reader?
-    @posts = nil  if current_user.reader?
-    if current_user.reader?
-      flash[:alert] = "You are not authorized to perform this action."
-      redirect_to posts_path
-    elsif @post.nil?
-      flash[:notice] = "You have not posts."
+    unless current_user.reader?
+      @posts = policy_scope(Post).order('created_at desc').page(params[:page])
+      if @posts.nil?
+        flash[:info] = "You have no posts."
+        redirect_to posts_path
+      end
+    else
+      flash[:notice] = "You are not authorized to perform this action."
       redirect_to posts_path
     end
   end
